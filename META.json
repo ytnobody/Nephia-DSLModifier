@@ -42,11 +42,13 @@
       },
       "runtime" : {
          "requires" : {
+            "Nephia" : "0.23",
             "perl" : "5.008005"
          }
       },
       "test" : {
          "requires" : {
+            "Capture::Tiny" : "0",
             "Test::More" : "0.98"
          }
       }
