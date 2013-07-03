@@ -2,6 +2,9 @@ Revision history for Perl extension Nephia-DSLModifier
 
 {{$NEXT}}
 
+0.02 2013-07-03T01:53:38Z
+    - bug fix : add some deps
+
 0.01 2013-07-02T03:21:05Z
 
     - original version
