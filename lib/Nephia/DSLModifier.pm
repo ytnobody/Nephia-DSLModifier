@@ -2,30 +2,21 @@ package Nephia::DSLModifier;
 use 5.008005;
 use strict;
 use warnings;
+use Carp ();
 
 our $VERSION = "0.02";
 
 use parent 'Exporter';
 
-our @EXPORT = qw/before around after origin/;
-
-sub origin ($) {
-    my ($method_name) = @_;
-    no strict 'refs';
-    *{'Nephia::Core::'.$method_name}{CODE};
-}
+our @EXPORT = qw/before around after/;
 
 sub around ($&) {
-    my ($method_name, $coderef) = @_;
-    no strict 'refs';
-    no warnings 'redefine';
-    my $orig = Nephia::DSLModifier::origin($method_name) or die "specified unsupported DSL '$method_name'";
-    *{'Nephia::Core::'.$method_name} = sub { $coderef->(@_, $orig) };
+    Nephia::DSLModifier::_modify(@_);
 }
 
 sub before ($&) {
     my ($method_name, $coderef) = @_;
-    Nephia::DSLModifier::around($method_name, sub {
+    Nephia::DSLModifier::_modify($method_name, sub {
         my $orig = pop; 
         $coderef->(@_);
         $orig->(@_);
@@ -34,12 +25,21 @@ sub before ($&) {
 
 sub after ($&) {
     my ($method_name, $coderef) = @_;
-    Nephia::DSLModifier::around($method_name, sub {
+    Nephia::DSLModifier::_modify($method_name, sub {
         my $orig = pop; 
         my @res = $orig->(@_);
         $coderef->(@_);
         ( @res );
     });
+}
+
+sub _modify {
+    my ($method_name, $coderef) = @_;
+    my $caller = caller(6);
+    no strict 'refs';
+    no warnings 'redefine';
+    my $orig = *{$caller.'::'.$method_name}{CODE} or Carp::croak "specified unsupported DSL '$method_name' on package $caller"; ### anyway, we must use magic...
+    *{$caller.'::'.$method_name} = sub { $coderef->(@_, $orig) };
 }
 
 1;
@@ -55,30 +55,39 @@ Nephia::DSLModifier -  DSL Modifier feature for Nephia
 
     use Nephia::DSLModifier;
     
-    # fetch coderef of "res" DSL
-    my $coderef = origin 'res';
-    
     # add logic before "res" DSL
     before 'res' => sub {
-        ...
+        ... ### do stuff 
     };
     
     # add logic after "res" DSL
     after 'res' => sub {
-        ...
+        ... ### do stuff
     };
     
     # modify "res" DSL
     around 'res' => sub {
         my $origin = pop;
         my $reponse = $origin->( @_ );
-        ...
+        ... ### do stuff
         return $response;
     };
 
 =head1 DESCRIPTION
 
 Nephia::DSLModifier provides modifier commands that modifies Nephia DSL.
+
+=head1 FUNCTIONS 
+
+=over 4 
+
+=item before $dsl => $coderef
+
+=item after $dsl => $coderef
+
+=item around $dsl => $coderef
+
+=back
 
 =head1 LICENSE
 
