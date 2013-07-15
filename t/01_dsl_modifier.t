@@ -2,15 +2,27 @@ use warnings;
 use Test::More;
 
 subtest 'around' => sub {
-    package Nephia::DSLModifier::Test::Around;
-    use File::Spec;
-    use File::Basename 'dirname';
-    use lib ( 
-        File::Spec->rel2abs(File::Spec->catdir(dirname(__FILE__), 'lib'))
-    );
-    use Nephia plugins => ['Test::DSLModifier::Around'];
-    my $code = \&base_dir;
-    main::like(base_dir, qr/^dir=/, 'modified');
+    subtest 'basic' => sub {
+        package Nephia::DSLModifier::Test::Around;
+        use File::Spec;
+        use File::Basename 'dirname';
+        use lib (
+            File::Spec->rel2abs(File::Spec->catdir(dirname(__FILE__), 'lib'))
+        );
+        use Nephia plugins => ['Test::DSLModifier::Around'];
+        main::like(base_dir, qr/^dir=/, 'modified');
+    };
+    subtest 'prototype' => sub {
+        package Nephia::DSLModifier::Test::Around::Prototype;
+        use File::Spec;
+        use File::Basename 'dirname';
+        use lib (
+            File::Spec->rel2abs(File::Spec->catdir(dirname(__FILE__), 'lib'))
+        );
+        use Nephia plugins => ['Test::DSLModifier::Around::Prototype'];
+        my $res = base_dir { 'dir: '.($_ ? $_ : '') };
+        main::like($res, qr/^dir: /, 'modified');
+    }
 };
 
 subtest 'before and after' => sub {
