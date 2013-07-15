@@ -3,6 +3,7 @@ use 5.008005;
 use strict;
 use warnings;
 use Carp ();
+use Scalar::Util qw/set_prototype/;
 
 our $VERSION = "0.03";
 
@@ -37,9 +38,13 @@ sub _modify {
     my ($method_name, $coderef) = @_;
     my $caller = caller(6);
     no strict 'refs';
-    no warnings 'redefine';
+    no warnings qw/redefine prototype/;
     my $orig = *{$caller.'::'.$method_name}{CODE} or Carp::croak "specified unsupported DSL '$method_name' on package $caller"; ### anyway, we must use magic...
-    *{$caller.'::'.$method_name} = sub { $coderef->(@_, $orig) };
+    my $modifi_coderef = sub { $coderef->(@_, $orig) };
+    if (my $proto_str = prototype $coderef) {
+        $modifi_coderef = set_prototype sub { $coderef->(@_, $orig) },  $proto_str;
+    }
+    *{$caller.'::'.$method_name} = $modifi_coderef;
 }
 
 1;
