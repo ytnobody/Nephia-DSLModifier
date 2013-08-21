@@ -1,6 +1,6 @@
-package Nephia::Plugin::Test::DSLModifier::Around;
+package PrimalNephia::Plugin::Test::DSLModifier::Around;
 
-use Nephia::DSLModifier;
+use PrimalNephia::DSLModifier;
 use Carp ();
 
 around base_dir => sub {

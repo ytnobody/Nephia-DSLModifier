@@ -1,4 +1,4 @@
-Revision history for Perl extension Nephia-DSLModifier
+Revision history for Perl extension PrimalNephia-DSLModifier
 
 {{$NEXT}}
 
@@ -6,7 +6,7 @@ Revision history for Perl extension Nephia-DSLModifier
     - feature : support override prototype in around
 
 0.03 2013-07-11T10:04:52Z
-    - refactor : compliant for Nephia-0.31
+    - refactor : compliant for PrimalNephia-0.31
 
 0.02 2013-07-03T01:53:38Z
     - bug fix : add some deps

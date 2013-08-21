@@ -1,4 +1,4 @@
-package Nephia::DSLModifier;
+package PrimalNephia::DSLModifier;
 use 5.008005;
 use strict;
 use warnings;
@@ -12,12 +12,12 @@ use parent 'Exporter';
 our @EXPORT = qw/before around after/;
 
 sub around ($&) {
-    Nephia::DSLModifier::_modify(@_);
+    PrimalNephia::DSLModifier::_modify(@_);
 }
 
 sub before ($&) {
     my ($method_name, $coderef) = @_;
-    Nephia::DSLModifier::_modify($method_name, sub {
+    PrimalNephia::DSLModifier::_modify($method_name, sub {
         my $orig = pop; 
         $coderef->(@_);
         $orig->(@_);
@@ -26,7 +26,7 @@ sub before ($&) {
 
 sub after ($&) {
     my ($method_name, $coderef) = @_;
-    Nephia::DSLModifier::_modify($method_name, sub {
+    PrimalNephia::DSLModifier::_modify($method_name, sub {
         my $orig = pop; 
         my @res = $orig->(@_);
         $coderef->(@_);
@@ -54,11 +54,11 @@ __END__
 
 =head1 NAME
 
-Nephia::DSLModifier -  DSL Modifier feature for Nephia
+PrimalNephia::DSLModifier -  DSL Modifier feature for PrimalNephia
 
 =head1 SYNOPSIS
 
-    use Nephia::DSLModifier;
+    use PrimalNephia::DSLModifier;
     
     # add logic before "res" DSL
     before 'res' => sub {
@@ -80,7 +80,7 @@ Nephia::DSLModifier -  DSL Modifier feature for Nephia
 
 =head1 DESCRIPTION
 
-Nephia::DSLModifier provides modifier commands that modifies Nephia DSL.
+PrimalNephia::DSLModifier provides modifier commands that modifies PrimalNephia DSL.
 
 =head1 FUNCTIONS 
 

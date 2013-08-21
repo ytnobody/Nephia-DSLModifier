@@ -1,10 +1,10 @@
 # NAME
 
-Nephia::DSLModifier -  DSL Modifier feature for Nephia
+PrimalNephia::DSLModifier -  DSL Modifier feature for PrimalNephia
 
 # SYNOPSIS
 
-    use Nephia::DSLModifier;
+    use PrimalNephia::DSLModifier;
     
 
     # add logic before "res" DSL
@@ -29,7 +29,7 @@ Nephia::DSLModifier -  DSL Modifier feature for Nephia
 
 # DESCRIPTION
 
-Nephia::DSLModifier provides modifier commands that modifies Nephia DSL.
+PrimalNephia::DSLModifier provides modifier commands that modifies PrimalNephia DSL.
 
 # FUNCTIONS 
 

@@ -1,5 +1,5 @@
 requires 'perl', '5.008001';
-requires 'Nephia', '0.23';
+requires 'PrimalNephia', '0.23';
 requires 'Scalar::Util';
 
 on 'test' => sub {
